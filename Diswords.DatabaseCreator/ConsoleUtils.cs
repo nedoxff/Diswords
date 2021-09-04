@@ -2,7 +2,7 @@ using System;
 
 namespace Diswords.DatabaseCreator
 {
-    public class ConsoleUtils
+    public static class ConsoleUtils
     {
         public static int WaitForChoice(params string[] texts)
         {

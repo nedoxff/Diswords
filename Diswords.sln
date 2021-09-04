@@ -1,8 +1,40 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diswords.Bot", "Diswords.Bot\Diswords.Bot.csproj", "{9719F2F6-82CE-4F77-AF01-ECB5D53FA693}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diswords.Cli", "Diswords.Cli\Diswords.Cli.csproj", "{154139EB-964F-4AF5-A387-6860A97015AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diswords.Core", "Diswords.Core\Diswords.Core.csproj", "{74222AFB-6936-4F9F-844A-563C86CA6DFE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diswords.DatabaseCreator", "Diswords.DatabaseCreator\Diswords.DatabaseCreator.csproj", "{FC5C2A23-E0E6-4CC1-B691-9E71678107E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diswords.Drawer", "Diswords.Drawer\Diswords.Drawer.csproj", "{BB86DB1C-A06A-49A4-A560-592584328452}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9719F2F6-82CE-4F77-AF01-ECB5D53FA693}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9719F2F6-82CE-4F77-AF01-ECB5D53FA693}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9719F2F6-82CE-4F77-AF01-ECB5D53FA693}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9719F2F6-82CE-4F77-AF01-ECB5D53FA693}.Release|Any CPU.Build.0 = Release|Any CPU
+		{154139EB-964F-4AF5-A387-6860A97015AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{154139EB-964F-4AF5-A387-6860A97015AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{154139EB-964F-4AF5-A387-6860A97015AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{154139EB-964F-4AF5-A387-6860A97015AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74222AFB-6936-4F9F-844A-563C86CA6DFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74222AFB-6936-4F9F-844A-563C86CA6DFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74222AFB-6936-4F9F-844A-563C86CA6DFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74222AFB-6936-4F9F-844A-563C86CA6DFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC5C2A23-E0E6-4CC1-B691-9E71678107E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC5C2A23-E0E6-4CC1-B691-9E71678107E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC5C2A23-E0E6-4CC1-B691-9E71678107E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC5C2A23-E0E6-4CC1-B691-9E71678107E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB86DB1C-A06A-49A4-A560-592584328452}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB86DB1C-A06A-49A4-A560-592584328452}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB86DB1C-A06A-49A4-A560-592584328452}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB86DB1C-A06A-49A4-A560-592584328452}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -27,15 +27,18 @@ namespace Diswords.DatabaseCreator
                 {
                     var path = ConsoleUtils.WaitForInput("Please, enter the path of the database: ",
                         s => !File.Exists(s));
-                    DatabaseHelper.OpenConnectionFromFile(path);
-                    CreateDatabase.Call();
+                    CreateDatabase.Call(path);
+                    
+                    Console.WriteLine("Done! Press any key to continue.");
+                    Console.ReadKey(true);
+                    ModifyDatabase.Call(null);
                     break;
                 }
                 case 2:
                 {
                     var path = ConsoleUtils.WaitForInput("Please, enter the path of the database: ", File.Exists);
                     DatabaseHelper.OpenConnectionFromFile(path);
-                    ModifyDatabase.Call();
+                    ModifyDatabase.Call(path);
                     break;
                 }
                 case 3:

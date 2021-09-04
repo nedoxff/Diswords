@@ -1,31 +1,38 @@
 using System;
 using System.Threading.Tasks;
+using Diswords.Core;
 using DSharpPlus;
+using DSharpPlus.CommandsNext;
+using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
-using DSharpPlus.SlashCommands;
 
 namespace Diswords.Bot.Commands
 {
-    public class Ping : ApplicationCommandModule
+    public class Ping : BaseCommandModule
     {
-        [SlashCommand("ping", "Pong!")]
-        public async Task PingCommand(InteractionContext ctx)
+        [Command("ping")]
+        public async Task PingCommand(CommandContext ctx)
         {
             var beforeResponse = DateTime.UtcNow;
-
-            await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource,
-                new DiscordInteractionResponseBuilder().AddEmbed(new DiscordEmbedBuilder()
-                    .WithDescription("Calculating..")));
+            var locale = Locale.Get(ctx.Guild.Id);
+            var calculatingString = locale["Calculating"];
+            var embed = new DiscordEmbedBuilder()
+                .WithDescription(calculatingString)
+                .Build();
+            var message = await ctx.RespondAsync(embed);
 
             var afterResponse = DateTime.UtcNow;
             var difference = (afterResponse - beforeResponse).Milliseconds;
 
-            await ctx.EditResponseAsync(new DiscordWebhookBuilder()
-                .AddEmbed(new DiscordEmbedBuilder()
-                    .WithTitle(DiscordEmoji.FromName(ctx.Client, ":ping_pong:") + "!")
-                    .WithColor(DiscordColor.Orange)
-                    .WithDescription(
-                        $"Our client ping is: `{ctx.Client.Ping}ms`\nAnd the slash response ping is: `{difference}ms`")));
+            var formatted = string.Format(locale["PingMessage"], ctx.Client.Ping, difference);
+
+            embed = new DiscordEmbedBuilder()
+                .WithTitle(DiscordEmoji.FromName(ctx.Client, ":ping_pong:") + "!")
+                .WithColor(DiscordColor.Orange)
+                .WithDescription(
+                    formatted)
+                .Build();
+            await message.ModifyAsync(embed);
         }
     }
 }

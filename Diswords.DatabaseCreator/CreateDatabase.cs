@@ -3,22 +3,20 @@ using Diswords.Core.Databases;
 
 namespace Diswords.DatabaseCreator
 {
-    public class CreateDatabase
+    public static class CreateDatabase
     {
-        public static void Call()
+        public static void Call(string path)
         {
             Console.Clear();
             Console.WriteLine("This process is automatic, please wait..");
+            
+            DatabaseHelper.OpenConnectionFromFile(path);
 
             Console.WriteLine("Creating guilds..");
             CreateGuilds();
 
             Console.WriteLine("Creating games..");
             CreateGames();
-
-            Console.WriteLine("Done! Press any key to continue.");
-            Console.ReadKey(true);
-            ModifyDatabase.Call();
         }
 
         private static void CreateGuilds()
@@ -29,7 +27,7 @@ namespace Diswords.DatabaseCreator
 		constraint guilds_pk
 			primary key,
 	games_played int,
-	default_language text default 'en'
+	language text default 'en'
 );
 
 create unique index guilds_id_uindex
@@ -46,9 +44,7 @@ create unique index guilds_id_uindex
 	language text not null,
 	type int not null,
 	guild_id int not null,
-	channel_id int not null,
-	players text not null,
-	used_words text not null
+	channel_id int not null
 );
 
 create unique index games_channel_id_uindex

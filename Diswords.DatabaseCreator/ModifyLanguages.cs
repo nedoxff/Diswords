@@ -4,28 +4,18 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
-using System.Threading;
+using Diswords.Core;
 using Diswords.Core.Databases;
 
 namespace Diswords.DatabaseCreator
 {
-    public class ModifyLanguages
+    public static class ModifyLanguages
     {
         public static void Push()
         {
             Console.Clear();
 
-            Console.Write("Checking languages from GitHub.. ");
-            var githubLanguages = GetLanguages();
-            Console.WriteLine($"found {githubLanguages.Length} languages.");
-
-            Console.Write("Checking languages in the database.. ");
-            var tables = GetDatabaseTables();
-
-            var databaseLanguages = githubLanguages.Where(l => tables.Contains(l)).ToArray();
-            var availableLanguages = githubLanguages.Where(l => !tables.Contains(l)).ToArray();
-
-            Console.WriteLine($"found {databaseLanguages.Length} languages.");
+            var (databaseLanguages, availableLanguages) = LanguageInfo.GetLanguageInfo();
 
             if (availableLanguages.Length == 0)
             {
@@ -37,7 +27,13 @@ namespace Diswords.DatabaseCreator
 
             var index = ConsoleUtils.WaitForChoice(availableLanguages) - 1;
             var language = availableLanguages[index];
+            InstallLanguage(language);
+        }
 
+        
+        public static void InstallLanguage(string language)
+        {
+            Console.Clear();
             var archive = $"{language}.zip";
             var dictionaryFile = $"{language}.txt";
 
@@ -46,7 +42,7 @@ namespace Diswords.DatabaseCreator
             if (File.Exists(dictionaryFile))
                 File.Delete(dictionaryFile);
 
-            DownloadFile(GetLanguageUrl(language), archive);
+            FileDownloader.Download(GetLanguageUrl(language), archive);
 
             Console.WriteLine("\nExtracting the dictionary..");
 
@@ -68,11 +64,11 @@ namespace Diswords.DatabaseCreator
             Console.Clear();
 
             Console.Write("Checking languages from GitHub.. ");
-            var githubLanguages = GetLanguages();
+            var githubLanguages = LanguageInfo.GetLanguages();
             Console.WriteLine($"found {githubLanguages.Length} languages.");
 
             Console.Write("Checking languages in the database.. ");
-            var tables = GetDatabaseTables();
+            var tables = LanguageInfo.GetDatabaseTables();
 
             var databaseLanguages = githubLanguages.Where(l => tables.Contains(l)).ToArray();
 
@@ -113,36 +109,7 @@ namespace Diswords.DatabaseCreator
             transaction.Commit();
         }
 
-        private static string[] GetDatabaseTables()
-        {
-            var list = new List<string>();
-            var reader =
-                DatabaseHelper.ExecuteReader(
-                    "select name from sqlite_master where type='table' and name not like 'sqlite_%'");
-            while (reader.Read())
-                list.Add(reader.GetString(0));
-            reader.Close();
-            return list.ToArray();
-        }
-
-        private static void DownloadFile(string url, string to)
-        {
-            Console.WriteLine($"Downloading {to} from {url}..");
-            var wc = new WebClient();
-            var finished = false;
-
-            wc.DownloadProgressChanged += (_, args) =>
-                Console.WriteLine(
-                    $"{args.BytesReceived}/{args.TotalBytesToReceive} bytes received | {args.ProgressPercentage}%");
-            wc.DownloadFileCompleted += (_, _) =>
-            {
-                Console.WriteLine("Done.");
-                finished = true;
-            };
-            wc.DownloadFileAsync(new Uri(url), to);
-
-            while (!finished) Thread.Sleep(1);
-        }
+        
 
         private static void CreateLanguageTable(string language)
         {
@@ -157,21 +124,18 @@ create unique index {language}_word_uindex
 	on {language} (word);");
         }
 
-        private static void RemoveLanguage(string language)
+        public static void RemoveLanguage(string language)
         {
             DatabaseHelper.ExecuteNonQuery($"drop table {language}");
         }
 
         private static string GetLanguageUrl(string language)
         {
-            return $"https://github.com/NedoProgrammer/DiswordsResources/blob/main/{language}.zip?raw=true";
+            return $"https://github.com/NedoProgrammer/DiswordsResources/blob/main/Dictionaries/{language}.zip?raw=true";
         }
 
-        private static string[] GetLanguages()
-        {
-            return new WebClient()
-                .DownloadString("https://raw.githubusercontent.com/NedoProgrammer/DiswordsResources/main/languages.txt")
-                .Trim().Split("\n");
-        }
+        
+        
+        
     }
 }
