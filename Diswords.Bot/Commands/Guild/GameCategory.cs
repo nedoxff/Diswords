@@ -16,7 +16,7 @@ namespace Diswords.Bot.Commands.Guild
         private static DiscordEmoji ChatBoxEmoji => DiscordEmoji.FromUnicode("💬");
 
         [Command("category")]
-        public async Task Setategory(CommandContext ctx)
+        public async Task SetCategory(CommandContext ctx)
         {
             var locale = Locale.Get(ctx.Guild.Id);
 
