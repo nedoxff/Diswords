@@ -5,7 +5,6 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using Diswords.Core;
-using Diswords.DatabaseCreator;
 using Serilog;
 
 namespace Diswords.Cli
@@ -15,7 +14,8 @@ namespace Diswords.Cli
         public static void Call()
         {
             Console.Clear();
-            Log.Information("It seems like you don't have the locales installed.\nThis process is automatic, don't worry.\nWe'll start in 5 seconds..");
+            Log.Information(
+                "It seems like you don't have the locales installed.\nThis process is automatic, don't worry.\nWe'll start in 5 seconds..");
             Thread.Sleep(5000);
 
             Update();
@@ -31,13 +31,13 @@ namespace Diswords.Cli
                 LocaleParser.Load(path);
             }
         }
-        
+
         public static void Update()
         {
             Console.Clear();
             Log.Information("Updating locales in progress..");
             Log.Debug("Backing up locales..");
-            
+
             if (Directory.Exists("Locales")) Directory.Move("Locales", "Locales_old");
             Directory.CreateDirectory("Locales");
 
@@ -54,15 +54,24 @@ namespace Diswords.Cli
                     Directory.Move("Locales_old", "Locales");
             }
             finally
-            { LocaleParser.Load(); }
-            
-            if(Directory.Exists("Locales_old")) 
+            {
+                LocaleParser.Load();
+            }
+
+            if (Directory.Exists("Locales_old"))
                 Directory.Delete("Locales_old", true);
         }
 
-        private static IEnumerable<string> GetLocales() => new WebClient().DownloadString("https://raw.githubusercontent.com/NedoProgrammer/DiswordsResources/main/locales.txt").Split("\n").Where(s => !string.IsNullOrEmpty(s)).Select(s => s.Trim()).ToArray();
+        private static IEnumerable<string> GetLocales()
+        {
+            return new WebClient()
+                .DownloadString("https://raw.githubusercontent.com/NedoProgrammer/DiswordsResources/main/locales.txt")
+                .Split("\n").Where(s => !string.IsNullOrEmpty(s)).Select(s => s.Trim()).ToArray();
+        }
 
-        private static string GetLocaleUrl(string language) =>
-            $"https://raw.githubusercontent.com/NedoProgrammer/DiswordsResources/main/Locales/{language}.locale";
+        private static string GetLocaleUrl(string language)
+        {
+            return $"https://raw.githubusercontent.com/NedoProgrammer/DiswordsResources/main/Locales/{language}.locale";
+        }
     }
 }

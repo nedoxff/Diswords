@@ -11,8 +11,10 @@ using DSharpPlus.Interactivity.Extensions;
 
 namespace Diswords.Bot.Commands.Guild
 {
-    public class GameCategory: BaseCommandModule
+    public class GameCategory : BaseCommandModule
     {
+        private static DiscordEmoji ChatBoxEmoji => DiscordEmoji.FromUnicode("💬");
+
         [Command("category")]
         public async Task Setategory(CommandContext ctx)
         {
@@ -23,7 +25,7 @@ namespace Diswords.Bot.Commands.Guild
             var success = locale["Success"];
             var category = locale["SelectCategory"];
             var categoryChanged = locale["CategoryChanged"];
-            
+
             var builder = new DiscordMessageBuilder();
             builder.WithContent(DiscordEmoji.FromName(ctx.Client, ":point_down:"));
             builder.AddComponents(new DiscordSelectComponent("category", category,
@@ -39,9 +41,9 @@ namespace Diswords.Bot.Commands.Guild
             {
                 var id = ulong.Parse(result.Result.Values[0]);
                 var name = ctx.Guild.Channels.FirstOrDefault(c => c.Value.IsCategory && c.Key == id).Value;
-                
+
                 GuildDatabaseHelper.SetParentGameCategory(ctx.Guild.Id, id);
-                
+
                 await message.DeleteAsync();
 
                 await ctx.RespondAsync(new DiscordEmbedBuilder()
@@ -53,8 +55,11 @@ namespace Diswords.Bot.Commands.Guild
             }
         }
 
-        private static IEnumerable<DiscordSelectComponentOption> GetCategoryDropdown(CommandContext ctx) => ctx.Guild.Channels.Where(c => c.Value.IsCategory).Select(c => new DiscordSelectComponentOption(c.Value.Name, c.Key.ToString(), emoji: new DiscordComponentEmoji(ChatBoxEmoji)));
-
-        private static DiscordEmoji ChatBoxEmoji => DiscordEmoji.FromUnicode("💬");
+        private static IEnumerable<DiscordSelectComponentOption> GetCategoryDropdown(CommandContext ctx)
+        {
+            return ctx.Guild.Channels.Where(c => c.Value.IsCategory).Select(c =>
+                new DiscordSelectComponentOption(c.Value.Name, c.Key.ToString(),
+                    emoji: new DiscordComponentEmoji(ChatBoxEmoji)));
+        }
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using Diswords.Core;
 using Diswords.Core.Databases;
@@ -18,13 +17,13 @@ namespace Diswords.Bot.Events
                 var channel = guild.SystemChannel ?? guild.GetDefaultChannel();
 
                 var text = Locale.Get("en", "GuildJoinedText");
-            
+
                 var embed = new DiscordEmbedBuilder()
                     .WithColor(DiscordColor.Orange)
                     .WithDescription(text)
                     .WithTitle("Hello!")
                     .Build();
-            
+
                 var message = await channel.SendMessageAsync(embed);
 
                 var databaseGuild = new DatabaseGuild(guild.Id, 0, 0, "en");
@@ -36,7 +35,7 @@ namespace Diswords.Bot.Events
                     .WithDescription(text)
                     .WithTitle("Done!")
                     .Build();
-                await message.ModifyAsync(embed); 
+                await message.ModifyAsync(embed);
             });
             return Task.CompletedTask;
         }

@@ -7,7 +7,7 @@ namespace Diswords.DatabaseCreator
     {
         public static void Call(string path)
         {
-            if(!string.IsNullOrEmpty(path))
+            if (!string.IsNullOrEmpty(path))
                 DatabaseHelper.OpenConnectionFromFile(path);
             while (true)
             {

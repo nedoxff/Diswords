@@ -19,9 +19,9 @@ namespace Diswords.Core
 
             var databaseLanguages = githubLanguages.Where(l => tables.Contains(l)).ToArray();
             var availableLanguages = githubLanguages.Where(l => !tables.Contains(l)).ToArray();
-            
+
             Console.WriteLine($"found {databaseLanguages.Length} languages.");
-            
+
             return (databaseLanguages, availableLanguages);
         }
 
@@ -32,10 +32,10 @@ namespace Diswords.Core
 
             var databaseLanguages = githubLanguages.Where(l => tables.Contains(l)).ToArray();
             var availableLanguages = githubLanguages.Where(l => !tables.Contains(l)).ToArray();
-            
+
             return (databaseLanguages, availableLanguages);
         }
-        
+
         public static string[] GetDatabaseTables()
         {
             var list = new List<string>();
@@ -47,7 +47,7 @@ namespace Diswords.Core
             reader.Close();
             return list.ToArray();
         }
-        
+
         public static string[] GetLanguages()
         {
             return new WebClient()

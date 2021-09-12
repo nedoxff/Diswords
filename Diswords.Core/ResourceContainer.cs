@@ -8,9 +8,9 @@ namespace Diswords.Core
     public static class ResourceContainer
     {
         public static Dictionary<string, FontFamily> FontFamilies = new();
-        private static FontCollection _fontCollection = new();
-        
-        
+        private static readonly FontCollection _fontCollection = new();
+
+
         public static void Load()
         {
             if (!Directory.Exists("Resources"))
@@ -18,7 +18,6 @@ namespace Diswords.Core
 
             foreach (var file in Directory.GetFiles("Resources", "*.ttf", SearchOption.AllDirectories))
                 FontFamilies[Path.GetFileNameWithoutExtension(file)] = _fontCollection.Install(file);
-            
         }
     }
 }

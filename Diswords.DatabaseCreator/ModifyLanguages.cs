@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Net;
 using Diswords.Core;
 using Diswords.Core.Databases;
 
@@ -30,7 +28,7 @@ namespace Diswords.DatabaseCreator
             InstallLanguage(language);
         }
 
-        
+
         public static void InstallLanguage(string language)
         {
             Console.Clear();
@@ -109,7 +107,6 @@ namespace Diswords.DatabaseCreator
             transaction.Commit();
         }
 
-        
 
         private static void CreateLanguageTable(string language)
         {
@@ -131,11 +128,8 @@ create unique index {language}_word_uindex
 
         private static string GetLanguageUrl(string language)
         {
-            return $"https://github.com/NedoProgrammer/DiswordsResources/blob/main/Dictionaries/{language}.zip?raw=true";
+            return
+                $"https://github.com/NedoProgrammer/DiswordsResources/blob/main/Dictionaries/{language}.zip?raw=true";
         }
-
-        
-        
-        
     }
 }

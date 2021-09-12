@@ -1,8 +1,6 @@
 using System;
 using System.Reflection;
-using System.Security.Policy;
 using System.Threading.Tasks;
-using Diswords.Bot.Commands;
 using Diswords.Bot.Events;
 using Diswords.Core;
 using DSharpPlus;
@@ -57,7 +55,7 @@ namespace Diswords.Bot
             var commands = _client.UseCommandsNext(new CommandsNextConfiguration
             {
                 EnableDms = false,
-                StringPrefixes = new [] {"dw."},
+                StringPrefixes = new[] {"dw."},
                 EnableMentionPrefix = true,
                 IgnoreExtraArguments = false,
                 EnableDefaultHelp = true,
@@ -87,8 +85,11 @@ namespace Diswords.Bot
             _client.GuildCreated += JoinedGuildEvent.OnGuildCreated;
         }
 
-        public static DiscordGuild GetGuild(ulong id) => _client.GetGuildAsync(id).Result;
-        
+        public static DiscordGuild GetGuild(ulong id)
+        {
+            return _client.GetGuildAsync(id).Result;
+        }
+
         private static Task CommandHandler(DiscordClient sender, MessageCreateEventArgs e)
         {
             if (e.Author.IsBot) return Task.CompletedTask;
@@ -96,9 +97,9 @@ namespace Diswords.Bot
             var msg = e.Message;
 
             var cmdStart = msg.GetStringPrefixLength("dw.");
-            if(cmdStart == -1) return Task.CompletedTask;
+            if (cmdStart == -1) return Task.CompletedTask;
             var cmdString = msg.Content[cmdStart..];
-            
+
             var command = cnext.FindCommand(cmdString, out var args);
             if (command == null)
                 return Task.CompletedTask;

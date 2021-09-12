@@ -6,7 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Diswords.Core\Diswords.Core.csproj" />
+        <ProjectReference Include="..\Diswords.Core\Diswords.Core.csproj"/>
     </ItemGroup>
 
 </Project>

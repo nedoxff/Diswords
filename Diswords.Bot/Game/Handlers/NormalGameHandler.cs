@@ -5,6 +5,10 @@ namespace Diswords.Bot.Game.Handlers
 {
     public class NormalGameHandler : GameHandler
     {
+        public NormalGameHandler(DatabaseGame game, GameChannelType type) : base(game, type)
+        {
+        }
+
         public override void Start()
         {
         }
@@ -29,8 +33,8 @@ namespace Diswords.Bot.Game.Handlers
                 await GameChannel.SendMessageAsync(EmbedHelper.SimpleEmbed(DiscordColor.SpringGreen, firstMessage,
                     firstMessageTitle));
             if (GameChannelType == GameChannelType.Room) await message.PinAsync();
-            
-            if(GameType == GameType.Normal)
+
+            if (GameType == GameType.Normal)
                 Start();
         }
 
@@ -51,10 +55,6 @@ namespace Diswords.Bot.Game.Handlers
         }
 
         public override void OnPlayerLeave(DiscordUser user)
-        {
-        }
-
-        public NormalGameHandler(DatabaseGame game, GameChannelType type) : base(game, type)
         {
         }
     }

@@ -5,12 +5,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
-      <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta13" />
+        <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3"/>
+        <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta13"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Diswords.Core\Diswords.Core.csproj" />
+        <ProjectReference Include="..\Diswords.Core\Diswords.Core.csproj"/>
     </ItemGroup>
 
 </Project>

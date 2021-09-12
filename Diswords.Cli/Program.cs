@@ -22,30 +22,38 @@ namespace Diswords.Cli
 
             if (!File.Exists("database.db"))
             {
-                Log.Information("It seems like you're running the bot for first time, we'll call the installer in 5 seconds..");
+                Log.Information(
+                    "It seems like you're running the bot for first time, we'll call the installer in 5 seconds..");
                 Thread.Sleep(5000);
-                if(arguments.ManualDatabaseInstall) DatabaseInstaller.ManualInstall();
+                if (arguments.ManualDatabaseInstall) DatabaseInstaller.ManualInstall();
                 else DatabaseInstaller.AutomaticInstall();
                 Console.Clear();
             }
-            else DatabaseHelper.OpenConnectionFromFile("database.db");
+            else
+            {
+                DatabaseHelper.OpenConnectionFromFile("database.db");
+            }
 
             if (!Directory.Exists("Locales"))
             {
                 LocaleInstaller.Call();
-                Console.Clear();    
+                Console.Clear();
             }
             else
+            {
                 LocaleParser.Load();
-            
+            }
+
             if (!Directory.Exists("Resources"))
             {
                 ResourcesInstaller.Call();
-                Console.Clear();    
+                Console.Clear();
             }
             else
+            {
                 ResourceContainer.Load();
-            
+            }
+
 
             DiswordsClient.Initialize(arguments.Debug);
 
@@ -102,8 +110,9 @@ namespace Diswords.Cli
             [Option('d', "debug", Required = false, Default = false,
                 HelpText = "Want to see more output? Specify this argument.")]
             public bool Debug { get; set; }
-            
-            [Option('m', "manual-install", Required = false, Default = false, HelpText = "Don't want to have troubles with databases? Specify this argument.")]
+
+            [Option('m', "manual-install", Required = false, Default = false,
+                HelpText = "Don't want to have troubles with databases? Specify this argument.")]
             public bool ManualDatabaseInstall { get; set; }
         }
     }

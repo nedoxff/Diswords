@@ -8,7 +8,7 @@ namespace Diswords.Cli
         public static void AutomaticInstall()
         {
             CreateDatabase.Call("database.db");
-            foreach(var language in LanguageInfo.GetLanguages())
+            foreach (var language in LanguageInfo.GetLanguages())
                 ModifyLanguages.InstallLanguage(language);
         }
 
@@ -18,6 +18,9 @@ namespace Diswords.Cli
             ModifyDatabase.Call(null);
         }
 
-        public static void Update() => UpdateDatabase.Call();
+        public static void Update()
+        {
+            UpdateDatabase.Call();
+        }
     }
 }

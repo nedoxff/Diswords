@@ -19,7 +19,7 @@ namespace Diswords.Drawer
             var gothamMedium = new Font(gothamFamily, 48f);
 
             var image = new Image<Rgba32>(800, 600);
-            
+
             image.Mutate(i =>
             {
                 i.Clear(new GraphicsOptions(), Color.FromRgba(184, 232, 164, 255));
@@ -40,7 +40,7 @@ namespace Diswords.Drawer
                     }
                 })*/
             });
-            
+
             image.SaveAsPng(result);
             image.Dispose();
 

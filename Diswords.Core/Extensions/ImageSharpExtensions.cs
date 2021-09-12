@@ -4,6 +4,9 @@ namespace Diswords.Core.Extensions
 {
     public static class ImageSharpExtensions
     {
-        public static Font CreateFont(this FontFamily family, float size) => new(family, size);
+        public static Font CreateFont(this FontFamily family, float size)
+        {
+            return new(family, size);
+        }
     }
 }

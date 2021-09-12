@@ -28,7 +28,7 @@ namespace Diswords.DatabaseCreator
                     var path = ConsoleUtils.WaitForInput("Please, enter the path of the database: ",
                         s => !File.Exists(s));
                     CreateDatabase.Call(path);
-                    
+
                     Console.WriteLine("Done! Press any key to continue.");
                     Console.ReadKey(true);
                     ModifyDatabase.Call(null);

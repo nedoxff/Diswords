@@ -8,7 +8,7 @@ namespace Diswords.Bot.Game
 {
     public enum GameType
     {
-        Normal    
+        Normal
     }
 
     public enum GameChannelType
@@ -19,8 +19,8 @@ namespace Diswords.Bot.Game
 
     public class GameInfo
     {
-        public string LocaleName;
         public string Emoji;
+        public string LocaleName;
         public string ShortName;
         public GameType Type;
 
@@ -51,6 +51,9 @@ namespace Diswords.Bot.Game
             };
         }
 
-        public static GameType GetGameType(string shortName) => GameTypes.First(g => g.Key == shortName).Value.Type;
+        public static GameType GetGameType(string shortName)
+        {
+            return GameTypes.First(g => g.Key == shortName).Value.Type;
+        }
     }
 }

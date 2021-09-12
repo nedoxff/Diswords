@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using Diswords.Core;
-using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;

@@ -6,18 +6,18 @@ namespace Diswords.Bot.Game
 {
     public abstract class GameHandler
     {
-        public DatabaseGame InternalGame;
+        public DiscordChannel GameChannel;
         public GameChannelType GameChannelType;
         public GameType GameType;
-        public DiscordChannel GameChannel;
-        public Locale Locale;
         public string Id;
+        public DatabaseGame InternalGame;
+        public Locale Locale;
 
         public GameHandler(DatabaseGame game, GameChannelType type)
         {
             Id = game.Id;
             GameChannelType = type;
-            GameType = (GameType)game.Type;
+            GameType = (GameType) game.Type;
             InternalGame = game;
             GameChannel = DiswordsClient.GetGuild(game.GuildId).GetChannel(game.ChannelId);
             Locale = Locale.Get(game.GuildId);

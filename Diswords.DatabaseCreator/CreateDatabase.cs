@@ -9,7 +9,7 @@ namespace Diswords.DatabaseCreator
         {
             Console.Clear();
             Console.WriteLine("This process is automatic, please wait..");
-            
+
             DatabaseHelper.OpenConnectionFromFile(path);
 
             Console.WriteLine("Creating guilds..");

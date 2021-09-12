@@ -13,7 +13,6 @@ namespace Diswords.Bot.Commands.Guild
 {
     public class Languages : BaseCommandModule
     {
-
         [Command("language")]
         public async Task SetCommand(CommandContext ctx)
         {
@@ -37,7 +36,6 @@ namespace Diswords.Bot.Commands.Guild
             }
             else
             {
-                
                 GuildDatabaseHelper.SetLanguage(ctx.Guild.Id, result.Result.Values[0]);
                 locale = Locale.Get(guildId);
                 var languageChanged = locale["LanguageChanged"];
@@ -54,6 +52,11 @@ namespace Diswords.Bot.Commands.Guild
             }
         }
 
-        private static IEnumerable<DiscordSelectComponentOption> GetLanguageDropdown() => Locale.Locales.Values.Select(language => new DiscordSelectComponentOption($"{language.Name} ({language.NativeName})", language.ShortName, emoji: new DiscordComponentEmoji(DiscordEmoji.FromUnicode(language.Flag)))).ToList();
+        private static IEnumerable<DiscordSelectComponentOption> GetLanguageDropdown()
+        {
+            return Locale.Locales.Values.Select(language =>
+                new DiscordSelectComponentOption($"{language.Name} ({language.NativeName})", language.ShortName,
+                    emoji: new DiscordComponentEmoji(DiscordEmoji.FromUnicode(language.Flag)))).ToList();
+        }
     }
 }

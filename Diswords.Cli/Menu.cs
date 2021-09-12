@@ -1,5 +1,4 @@
 using System;
-using Diswords.Core.Databases;
 using Diswords.DatabaseCreator;
 using Serilog;
 
@@ -41,6 +40,7 @@ namespace Diswords.Cli
                     Exit();
                     break;
             }
+
             Console.Clear();
             Console.WriteLine("Done!\n");
         }
