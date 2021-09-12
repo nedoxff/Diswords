@@ -6,6 +6,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Diswords.Bot.Game;
 using Diswords.Core;
+using Diswords.Core.Databases;
+using Diswords.Drawer;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
@@ -21,8 +23,7 @@ namespace Diswords.Bot.Commands.Game
         public async Task CreateGameCommand(CommandContext ctx)
         {
             var locale = Locale.Get(ctx.Guild.Id);
-
-
+            
             var gameType = await GetGameType(locale, ctx);
 
             if (gameType == null)
@@ -38,6 +39,8 @@ namespace Diswords.Bot.Commands.Game
             if (roomOrChannel == null)
                 return;
             
+            var creatingGame = locale["GameCreate_CreatingGame"];
+            var generatingId = locale["GameCreate_GeneratingId"];
             switch (roomOrChannel)
             {
                 case "room":
@@ -47,16 +50,53 @@ namespace Diswords.Bot.Commands.Game
                     if (privateRoom == null)
                         return;
 
+                    var creatingChannel = locale["GameCreate_CreatingChannel"];
+                    var generatingImage = locale["GameCreate_GeneratingImage"];
+
+                    var message = await SendLoadingMessage(locale, ctx);
+                    
+                    await message.ModifyAsync(EmbedHelper.SimpleEmbed(generatingId));
+                    var id = GameDatabaseHelper.GetUniqueId();
+
+                    await message.ModifyAsync(EmbedHelper.SimpleEmbed(creatingChannel));
+                    var categoryId = GuildDatabaseHelper.GetParentGameCategory(ctx.Guild.Id);
+                    var category = categoryId == 0 ? null : ctx.Guild.GetChannel((ulong)categoryId);
+                    var channel = await ctx.Guild.CreateChannelAsync(id, ChannelType.Text, category, "Playing Diswords!");
+                    await channel.AddOverwriteAsync(ctx.Guild.EveryoneRole, Permissions.None, Permissions.All);
+
+                    await message.ModifyAsync(EmbedHelper.SimpleEmbed(creatingGame));
+                    var databaseGame = new DatabaseGame(id, language, "", ctx.User.Id.ToString(), (int)gameType.Type, (long)ctx.User.Id, (long)ctx.Guild.Id, (long)channel.Id);
+                    GameDatabaseHelper.InsertGame(databaseGame);
+                    var handler = GameSettings.GetHandler(gameType.Type, GameChannelType.Room, databaseGame);
+                    GameSettings.Handlers[handler.Id] = handler;
+                    await message.ModifyAsync(EmbedHelper.SimpleEmbed(generatingImage));
+                    var image = NewRoomDrawer.Generate("", id, false);
+                    await ctx.RespondAsync(new DiscordMessageBuilder()
+                        .WithFile("new_game.png", image));
+                    
+                    await message.DeleteAsync();
+                    handler.Setup();
                     break;
                 }
                 case "channel":
                 {
+                    var message = await SendLoadingMessage(locale, ctx);
+                    await message.ModifyAsync(EmbedHelper.SimpleEmbed(generatingId));
+                    var id = GameDatabaseHelper.GetUniqueId();
+                    
+                    await message.ModifyAsync(EmbedHelper.SimpleEmbed(creatingGame));
+                    var databaseGame = new DatabaseGame(id, language, "", ctx.User.Id.ToString(), (int)gameType.Type, (long)ctx.User.Id, (long)ctx.Guild.Id, (long)ctx.Channel.Id);
+                    GameDatabaseHelper.InsertGame(databaseGame);
+
+                    await message.DeleteAsync();
                     break;
                 }
             }
+
+            await ctx.RespondAsync(DiscordEmoji.FromUnicode("✅"));
         }
 
-        private async Task<string?> GetRoomOrChannel(Locale locale, CommandContext ctx)
+        private static async Task<string?> GetRoomOrChannel(Locale locale, CommandContext ctx)
         {
             var roomOrChannel = locale["GameCreate_RoomOrChannel"];
             var room = locale["GameCreate_Room"];
@@ -75,7 +115,13 @@ namespace Diswords.Bot.Commands.Game
 
         }
 
-        private async Task<bool?> GetPrivateRoom(Locale locale, CommandContext ctx)
+        private static async Task<DiscordMessage> SendLoadingMessage(Locale locale, CommandContext ctx)
+        {
+            var giveMeAMoment = locale["GiveMeAMoment"];
+            return await ctx.RespondAsync(EmbedHelper.SimpleEmbed(giveMeAMoment));
+        }
+
+        private static async Task<bool?> GetPrivateRoom(Locale locale, CommandContext ctx)
         {
             var privateRoom = locale["GameCreate_PrivateRoom"];
             var yes = locale["Yes"];
@@ -87,18 +133,19 @@ namespace Diswords.Bot.Commands.Game
                 new DiscordButtonComponent(ButtonStyle.Danger, "no", no));
             var message = await ctx.RespondAsync(builder);
             var result = await message.WaitForButtonAsync(ctx.User, TimeSpan.FromSeconds(30));
+            await message.DeleteAsync();
             if (!result.TimedOut) return result.Result.Id == "yes";
             var timedOut = locale["GameCreate_TimedOut"];
             await message.ModifyAsync(EmbedHelper.ErrorEmbed(timedOut));
             return null;
         }
 
-        private async Task<GameInfo?> GetGameType(Locale locale, CommandContext ctx) => await WaitForDropdown(locale, ctx, "SelectGameType", () => GetGameTypeDropdown(locale),
+        private static async Task<GameInfo?> GetGameType(Locale locale, CommandContext ctx) => await WaitForDropdown(locale, ctx, "SelectGameType", () => GetGameTypeDropdown(locale),
             s => GameSettings.GameTypes.FirstOrDefault(i => i.Value.ShortName == s).Value);
 
-        private async Task<string?> GetLanguage(Locale locale, CommandContext ctx) =>
+        private static async Task<string?> GetLanguage(Locale locale, CommandContext ctx) =>
             await WaitForDropdown(locale, ctx, "SelectLanguage", GetLanguageDropdown, s => s);
-
+        
         private static async Task<T?> WaitForDropdown<T>(Locale locale, CommandContext ctx, string placeholder, Func<IEnumerable<DiscordSelectComponentOption>> elements, Func<string, T> returnValue) where T: class
         {
             var placeholderText = locale[placeholder];

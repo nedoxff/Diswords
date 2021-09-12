@@ -27,6 +27,7 @@ namespace Diswords.DatabaseCreator
 		constraint guilds_pk
 			primary key,
 	games_played int,
+	parent_game_category int,
 	language text default 'en'
 );
 
@@ -42,16 +43,16 @@ create unique index guilds_id_uindex
 		constraint games_pk
 			primary key,
 	language text not null,
+	last_letter text not null,
+	players text not null,
 	type int not null,
+	creator_id int not null,
 	guild_id int not null,
 	channel_id int not null
 );
 
 create unique index games_channel_id_uindex
 	on games (channel_id);
-
-create unique index games_guild_id_uindex
-	on games (guild_id);
 
 create unique index games_id_uindex
 	on games (id);");

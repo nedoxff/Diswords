@@ -16,6 +16,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Diswords.Core\Diswords.Core.csproj" />
+        <ProjectReference Include="..\Diswords.Drawer\Diswords.Drawer.csproj" />
     </ItemGroup>
 
 </Project>

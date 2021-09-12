@@ -1,17 +1,15 @@
 using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Diswords.Core;
-using Diswords.Core.Databases.Types;
+using Diswords.Core.Databases;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
-using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
 
-namespace Diswords.Bot.Commands
+namespace Diswords.Bot.Commands.Guild
 {
     public class Languages : BaseCommandModule
     {

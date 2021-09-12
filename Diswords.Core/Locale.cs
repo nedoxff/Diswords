@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Diswords.Core.Databases;
-using Diswords.Core.Databases.Types;
 using Microsoft.VisualBasic.CompilerServices;
 using Serilog;
 
@@ -48,7 +47,7 @@ namespace Diswords.Core
         {
             Log.Debug($"Parsing {language}..");
             var locale = new Locale();
-            var dictionary = data.Split("\n").Where(line => !string.IsNullOrEmpty(line) && !line.StartsWith("//"))
+            var dictionary = data.Split("\n").Where(line => !string.IsNullOrEmpty(line) && !string.IsNullOrWhiteSpace(line) && !line.StartsWith("//"))
                 .Select(line => line.Split("=>")).ToDictionary(split => split[0].Trim(), split => split[1].Trim().Replace("\\n", "\n"));
             foreach (var (key, value) in dictionary)
             {

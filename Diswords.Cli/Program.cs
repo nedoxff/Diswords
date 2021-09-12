@@ -37,6 +37,15 @@ namespace Diswords.Cli
             }
             else
                 LocaleParser.Load();
+            
+            if (!Directory.Exists("Resources"))
+            {
+                ResourcesInstaller.Call();
+                Console.Clear();    
+            }
+            else
+                ResourceContainer.Load();
+            
 
             DiswordsClient.Initialize(arguments.Debug);
 

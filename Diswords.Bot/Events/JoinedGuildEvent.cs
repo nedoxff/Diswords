@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Diswords.Core;
-using Diswords.Core.Databases.Types;
+using Diswords.Core.Databases;
 using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
@@ -27,7 +27,7 @@ namespace Diswords.Bot.Events
             
                 var message = await channel.SendMessageAsync(embed);
 
-                var databaseGuild = new DatabaseGuild(guild.Id, 0, "en");
+                var databaseGuild = new DatabaseGuild(guild.Id, 0, 0, "en");
                 GuildDatabaseHelper.InsertGuild(databaseGuild);
 
                 text = Locale.Get("en", "GuildJoinedFinish");

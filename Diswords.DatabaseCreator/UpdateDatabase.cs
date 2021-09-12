@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using Diswords.Core;
 using Diswords.Core.Databases;
-using Diswords.Core.Databases.Types;
 using Serilog;
 
 namespace Diswords.DatabaseCreator
